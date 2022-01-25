@@ -14,6 +14,12 @@ const server = http.createServer((req, res) => {
         // then send about html page.
         if(url === '/about') {
             fs.readFile('./pages/about.html', function(err, data) {
+
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+
                 res.write(data);
                 res.end();
             });
@@ -23,15 +29,12 @@ const server = http.createServer((req, res) => {
         // then send contact-me html page.
         if(url === '/contact-me') {
             fs.readFile('./pages/contact-me.html', function(err, data) {
-                res.write(data);
-                res.end();
-            });
-        }
 
-        // if the request's url is 'localhost:8080/404' 
-        // then send 404 html page.
-        if(url === '/404') {
-            fs.readFile('./pages/404.html', function(err, data) {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+
                 res.write(data);
                 res.end();
             });
@@ -39,8 +42,29 @@ const server = http.createServer((req, res) => {
 
         // if the request's url is 'localhost:8080' 
         // then send index html page.
-        else {
+        if(url === '/') {
             fs.readFile('index.html', function(err, data) {
+                
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+
+                res.write(data);
+                res.end();
+            });
+        }
+
+        // if the request's url is anything else
+        // then send 404 html page.
+        else {
+            fs.readFile('./pages/404.html', function(err, data) {
+                
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+
                 res.write(data);
                 res.end();
             });
