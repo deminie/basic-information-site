@@ -1,78 +1,24 @@
-const http = require('http');
-const fs = require('fs');
-
+const express = require('express');
+const app = express();
+const path = require('path');
 const port = process.env.PORT || 8080;
 
-const server = http.createServer((req, res) => {
-    
-        res.statusCode = 200;
-        res.setHeader('Context-Type', 'text/html');
-        
-        let url = req.url;
-
-        // if the request's url is 'localhost:8080/about' 
-        // then send about html page.
-        if(url === '/about') {
-            fs.readFile('./pages/about.html', function(err, data) {
-
-                if (err) {
-                    console.error(err);
-                    return;
-                }
-
-                res.write(data);
-                res.end();
-            });
-        }
-
-        // if the request's url is 'localhost:8080/contact-me' 
-        // then send contact-me html page.
-        if(url === '/contact-me') {
-            fs.readFile('./pages/contact-me.html', function(err, data) {
-
-                if (err) {
-                    console.error(err);
-                    return;
-                }
-
-                res.write(data);
-                res.end();
-            });
-        }
-
-        // if the request's url is 'localhost:8080' 
-        // then send index html page.
-        if(url === '/') {
-            fs.readFile('index.html', function(err, data) {
-                
-                if (err) {
-                    console.error(err);
-                    return;
-                }
-
-                res.write(data);
-                res.end();
-            });
-        }
-
-        // if the request's url is anything else
-        // then send 404 html page.
-        else {
-            fs.readFile('./pages/404.html', function(err, data) {
-                
-                if (err) {
-                    console.error(err);
-                    return;
-                }
-
-                res.write(data);
-                res.end();
-            });
-        }
-    
-    
+// if the user wants to access the homepage.
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, '/index.html'));
 });
 
-server.listen(port, () => {
+// if the user wants to access the about page.
+app.get('/about', function(req, res) {
+    res.sendFile(path.join(__dirname, '/pages/about.html'));
+});
+
+// if the user wants to access the contact-me page.
+app.get('/contact-me', function(req, res) {
+    res.sendFile(path.join(__dirname, '/pages/contact-me.html'));
+});
+
+// start the server listen at the provided port.
+app.listen(port, function() {
     console.log(`Server running at port ${port}`);
 });
